@@ -1,5 +1,4 @@
-import clsx from 'clsx';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import Link from 'next/link';
 import Img from 'next/image';
 import { getSize } from '@/utils';
@@ -68,4 +67,4 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
   );
 };
 
-export default AssetCard;
+export default memo(AssetCard);

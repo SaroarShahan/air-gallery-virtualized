@@ -62,7 +62,7 @@ const MasonryGallery = () => {
     const rows: CalculatedImageItem[][] = [];
     let currentRow: CalculatedImageItem[] = [];
     let currentRowWidth = 0;
-    const containerWidth = window?.innerWidth - 64;
+    const containerWidth = window.innerWidth - 64;
     const maxItemWidth = containerWidth / 2;
     const gapWidth = 16;
 
@@ -130,12 +130,11 @@ const MasonryGallery = () => {
           ...style,
           display: 'flex',
           gap: '16px',
-          padding: '0 16px',
           width: '100%',
         }}
         role="row"
       >
-        {row.map(({ calculatedWidth, ...image }, imageIndex) => (
+        {row.map(({ calculatedWidth, ...image }) => (
           <div
             key={`${index}-${image.id}`}
             className="masonry-item"
