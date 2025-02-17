@@ -1,6 +1,7 @@
 import { memo, useState } from 'react';
 import Link from 'next/link';
 import Img from 'next/image';
+
 import { getSize } from '@/utils';
 
 interface CardProps {
@@ -13,6 +14,8 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const isVideo = clip.ext === 'mp4';
+  const imageSrc = clip.assets?.image;
+  const videoSrc = clip.assets?.previewVideo;
 
   return (
     <div
@@ -21,20 +24,21 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
       onMouseLeave={() => setIsHovered(false)}
       style={{ height, width }}
     >
-      {clip.assets?.image ? (
+      {imageSrc ? (
         <Img
-          src={clip.assets.image}
+          src={imageSrc}
           alt={clip.title ?? ''}
           width={clip.width}
           height={clip.height}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="w-full h-auto object-cover rounded-md"
           loading="lazy"
         />
       ) : null}
 
-      {isVideo && isHovered ? (
+      {isVideo && videoSrc && isHovered ? (
         <video
-          src={clip.assets.previewVideo}
+          src={videoSrc}
           autoPlay
           muted
           loop

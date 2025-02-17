@@ -56,8 +56,6 @@ const MasonryGallery = () => {
   }, [debouncedScroll]);
 
   const distributeImages = useCallback(() => {
-    if (typeof window === 'undefined') return [];
-
     const rows: CalculatedImageItem[][] = [];
     let currentRow: CalculatedImageItem[] = [];
     let currentRowWidth = 0;
@@ -81,7 +79,7 @@ const MasonryGallery = () => {
       }));
     };
 
-    memoizedImages.forEach((image: ImageItem) => {
+    memoizedImages.forEach((image) => {
       const aspectRatio = image.width / image.height;
       let normalizedWidth = Math.floor(228 * aspectRatio);
 
@@ -129,20 +127,11 @@ const MasonryGallery = () => {
           ...style,
           display: 'flex',
           gap: '16px',
-          width: '100%',
         }}
         role="row"
       >
         {row.map(({ calculatedWidth, ...image }) => (
-          <div
-            key={`${index}-${image.id}`}
-            className="masonry-item"
-            style={{
-              width: `${calculatedWidth}px`,
-              flexShrink: 0,
-            }}
-            role="gridcell"
-          >
+          <div key={`${index}-${image.id}`} role="gridcell">
             <AssetCard
               key={image.id}
               height={228}
