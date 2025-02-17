@@ -12,7 +12,7 @@ import Title from '@/components/Title';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 
 const MasonryGallery = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [showAssets, setShowAssets] = useState(true);
 
   const {
@@ -55,14 +55,13 @@ const MasonryGallery = () => {
     return () => window.removeEventListener('scroll', debouncedScroll);
   }, [debouncedScroll]);
 
-  // Update the distributeImages function with proper types
   const distributeImages = useCallback(() => {
     if (typeof window === 'undefined') return [];
 
     const rows: CalculatedImageItem[][] = [];
     let currentRow: CalculatedImageItem[] = [];
     let currentRowWidth = 0;
-    const containerWidth = window.innerWidth - 64;
+    const containerWidth = containerRef.current?.clientWidth || 0;
     const maxItemWidth = containerWidth / 2;
     const gapWidth = 16;
 
