@@ -27,7 +27,7 @@ const MasonryGallery = () => {
     queryFn: ({ pageParam = null }: { pageParam: unknown }) =>
       fetchAssets({ cursor: pageParam as string | null }),
     getNextPageParam: (lastPage) => lastPage.pagination.cursor,
-    initialPageParam: undefined,
+    initialPageParam: 0,
   });
 
   const memoizedImages = useMemo(
@@ -40,7 +40,7 @@ const MasonryGallery = () => {
     if (!containerRef.current) return;
 
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 500 && !loading && hasMore) {
+    if (scrollTop + clientHeight >= scrollHeight - 300 && !loading && hasMore) {
       fetchNextPage();
     }
   }, [loading, hasMore, fetchNextPage]);
@@ -67,15 +67,16 @@ const MasonryGallery = () => {
       row: CalculatedImageItem[],
       rowWidth: number
     ): CalculatedImageItem[] => {
-      if (row.length === 0) return row;
-
       const totalGaps = row.length - 1;
       const availableWidth = containerWidth - totalGaps * gapWidth;
       const scale = availableWidth / (rowWidth - totalGaps * gapWidth);
 
       return row.map((item) => ({
         ...item,
-        calculatedWidth: Math.floor(item.calculatedWidth * scale),
+        calculatedWidth: Math.min(
+          Math.floor(item.calculatedWidth * scale),
+          600
+        ),
       }));
     };
 
@@ -108,7 +109,10 @@ const MasonryGallery = () => {
     });
 
     if (currentRow.length > 0) {
-      rows.push(finalizeRow(currentRow, currentRowWidth));
+      const finalArr = finalizeRow(currentRow, currentRowWidth);
+
+      if (finalArr.length >= 6)
+        rows.push(finalizeRow(currentRow, currentRowWidth));
     }
 
     return rows;

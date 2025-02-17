@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Img from 'next/image';
 
@@ -32,7 +32,7 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
           height={clip.height}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="w-full h-auto object-cover rounded-md"
-          loading="eager"
+          loading="lazy"
         />
       ) : null}
 
