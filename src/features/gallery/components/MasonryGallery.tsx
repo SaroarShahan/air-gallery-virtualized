@@ -40,13 +40,13 @@ const MasonryGallery = () => {
     if (!containerRef.current) return;
 
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    if (scrollTop + clientHeight >= scrollHeight - 300 && !loading && hasMore) {
+    if (scrollTop + clientHeight >= scrollHeight - 500 && !loading && hasMore) {
       fetchNextPage();
     }
   }, [loading, hasMore, fetchNextPage]);
 
   const debouncedScroll = useMemo(
-    () => debounce(handleScroll, 100),
+    () => debounce(handleScroll, 200),
     [handleScroll]
   );
 
@@ -182,7 +182,9 @@ const MasonryGallery = () => {
 
             {isFetchingNextPage && <Skeleton type="assets" />}
             {!hasMore && !loading && (
-              <div className="end-message">No more images to load</div>
+              <div className="flex justify-center text-lg font-bold">
+                No more images to load
+              </div>
             )}
           </div>
         )

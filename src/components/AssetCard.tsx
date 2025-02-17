@@ -32,7 +32,7 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
           height={clip.height}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="w-full h-auto object-cover rounded-md"
-          loading="lazy"
+          loading="eager"
         />
       ) : null}
 
@@ -71,4 +71,4 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
   );
 };
 
-export default memo(AssetCard);
+export default AssetCard;
