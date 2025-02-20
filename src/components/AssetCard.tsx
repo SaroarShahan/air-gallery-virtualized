@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Img from 'next/image';
 
@@ -17,12 +17,23 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
   const imageSrc = clip.assets?.image;
   const videoSrc = clip.assets?.previewVideo;
 
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+
+  const cardDetails = useMemo(() => {
+    return `${clip.ext.toUpperCase()} · ${getSize(clip.size)} · ${
+      clip.width
+    } x ${clip.height}`;
+  }, [clip.ext, clip.size, clip.width, clip.height]);
+
   return (
     <div
       className="group relative overflow-hidden before:absolute before:left-0 before:top-0 before:h-full before:w-full before:bg-gradient-to-b before:from-transparent before:to-gray-800 inset-[-6px] rounded-md border-4 border-transparent hover:border-gray-200 transition-all"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       style={{ height, width }}
+      role="assets card"
+      aria-label={clip.title || 'Media asset'}
     >
       {imageSrc ? (
         <Img
@@ -63,9 +74,7 @@ const AssetCard = ({ clip, height, width }: CardProps) => {
           </Link>
         </div>
 
-        <p className="truncate text-12 text-white uppercase">
-          {clip.ext} · {getSize(clip.size)} · {`${clip.width} x ${clip.height}`}
-        </p>
+        <p className="truncate text-12 text-white uppercase">{cardDetails}</p>
       </div>
     </div>
   );

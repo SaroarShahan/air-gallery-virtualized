@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@tanstack/react-query": "^5.66.0",
     "@tanstack/react-query-devtools": "^5.66.0",
     "clsx": "^2.1.1",
@@ -16,6 +17,7 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-draggable": "^4.4.6",
     "react-virtualized": "^9.22.6"
   },
   "devDependencies": {

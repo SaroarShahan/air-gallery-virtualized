@@ -11,6 +11,8 @@ import Skeleton from '@/components/Skeleton';
 import Title from '@/components/Title';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 
+const CONTAINER_GAP = 16;
+
 const MasonryGallery = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [showAssets, setShowAssets] = useState(true);
@@ -130,7 +132,7 @@ const MasonryGallery = () => {
         style={{
           ...style,
           display: 'flex',
-          gap: '16px',
+          gap: `${CONTAINER_GAP}px'`,
         }}
         role="row"
       >
