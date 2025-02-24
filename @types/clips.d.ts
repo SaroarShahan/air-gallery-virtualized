@@ -1,3 +1,12 @@
+interface Assets {
+  image: string;
+  video?: string;
+  previewVideo?: string;
+  seekVideo?: string;
+  pdf?: string;
+  original?: string;
+}
+
 interface Clip {
   id: string;
   accountId: string;
@@ -33,14 +42,7 @@ interface Clip {
     ownerAvatar: string;
   };
   avatar: string | null;
-  assets: {
-    image: string;
-    video?: string;
-    previewVideo?: string;
-    seekVideo?: string;
-    pdf?: string;
-    original?: string;
-  };
+  assets: Assets;
   mime?: string;
   altResolutions: {
     ext: string; // 'MP4'

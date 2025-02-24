@@ -31,11 +31,18 @@ const Board = () => {
         showBoards && (
           <div className="flex flex-wrap sm:flex-nowrap gap-4">
             {data?.data.map((board) => (
-              <Card
-                key={board.id}
-                imageUrl={board?.thumbnails?.[0]}
-                title={board.title}
-              />
+              <Card key={board.id} title={board.title} height={204} width={236}>
+                {board?.thumbnails?.[0] && (
+                  <Card.Image
+                    src={board.thumbnails[0]}
+                    alt={board.title}
+                    height={204}
+                    width={236}
+                  />
+                )}
+
+                <Card.Link title={board.title} />
+              </Card>
             ))}
           </div>
         )

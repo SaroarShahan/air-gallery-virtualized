@@ -5,11 +5,11 @@ import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { AutoSizer, List, WindowScroller } from 'react-virtualized';
 import debounce from 'lodash/debounce';
 
-import AssetCard from '@/components/AssetCard';
 import { fetchAssets } from '@/app/api/clips';
 import Skeleton from '@/components/Skeleton';
 import Title from '@/components/Title';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
+import Card from '@/components/Card';
 
 const CONTAINER_GAP = 16;
 
@@ -63,15 +63,14 @@ const MasonryGallery = () => {
     let currentRowWidth = 0;
     const containerWidth = containerRef.current?.clientWidth || 0;
     const maxItemWidth = containerWidth / 2;
-    const gapWidth = 16;
 
     const finalizeRow = (
       row: CalculatedImageItem[],
       rowWidth: number
     ): CalculatedImageItem[] => {
       const totalGaps = row.length - 1;
-      const availableWidth = containerWidth - totalGaps * gapWidth;
-      const scale = availableWidth / (rowWidth - totalGaps * gapWidth);
+      const availableWidth = containerWidth - totalGaps * CONTAINER_GAP;
+      const scale = availableWidth / (rowWidth - totalGaps * CONTAINER_GAP);
 
       return row.map((item) => ({
         ...item,
@@ -101,7 +100,7 @@ const MasonryGallery = () => {
 
       currentRow.push({ ...image, calculatedWidth: normalizedWidth });
       currentRowWidth +=
-        normalizedWidth + (currentRow.length > 1 ? gapWidth : 0);
+        normalizedWidth + (currentRow.length > 1 ? CONTAINER_GAP : 0);
 
       if (currentRowWidth >= containerWidth * 0.85) {
         rows.push(finalizeRow(currentRow, currentRowWidth));
@@ -122,9 +121,14 @@ const MasonryGallery = () => {
 
   const memoizedRows = useMemo(() => distributeImages(), [distributeImages]);
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+
   const renderRow = ({ index, key, style }: RowProps) => {
     if (index >= memoizedRows.length) return null;
-    const row = memoizedRows[index];
+    const rows = memoizedRows[index];
 
     return (
       <div
@@ -132,18 +136,43 @@ const MasonryGallery = () => {
         style={{
           ...style,
           display: 'flex',
-          gap: `${CONTAINER_GAP}px'`,
+          gap: `${CONTAINER_GAP}px`,
         }}
         role="row"
       >
-        {row.map(({ calculatedWidth, ...image }) => (
-          <div key={`${index}-${image.id}`} role="gridcell">
-            <AssetCard
-              key={image.id}
+        {rows.map((row) => (
+          <div key={`${index}-${row.id}`} role="gridcell">
+            <Card
               height={228}
-              width={calculatedWidth}
-              clip={image as Clip}
-            />
+              width={row.calculatedWidth}
+              onEnter={handleMouseEnter}
+              onLeave={handleMouseLeave}
+              title={row.title ?? ''}
+            >
+              {row.assets?.image && (
+                <Card.Image
+                  src={row.assets.image}
+                  alt={row.title ?? ''}
+                  width={row.width}
+                  height={row.height}
+                />
+              )}
+
+              <Card.Video
+                assets={row.assets}
+                duration={row.duration!}
+                ext={row.ext}
+                isHovered={isHovered}
+              />
+
+              <Card.Content
+                title={row?.title ?? ''}
+                size={row.size}
+                ext={row.ext}
+                height={row.height}
+                width={row.width}
+              />
+            </Card>
           </div>
         ))}
       </div>
