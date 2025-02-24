@@ -1,5 +1,3 @@
-'use client';
-
 import { lazy, Suspense } from 'react';
 
 import Skeleton from '@/components/Skeleton';

@@ -13,11 +13,10 @@ interface ImageAsset {
   image: string;
 }
 
-interface ImageItem {
+interface ImageItem extends Clip {
   id: string;
   width: number;
   height: number;
-  assets: ImageAsset;
   title?: string;
   ext: string;
   size: number;
