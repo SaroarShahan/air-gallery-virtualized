@@ -37,7 +37,6 @@ const Card = ({
     >
       {Children.map(children, (child) => {
         if (!isValidElement(child)) {
-          console.log('child', child);
           throw new Error('Card only accepts valid React elements as children');
         }
 
